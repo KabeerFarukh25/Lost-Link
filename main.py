@@ -4,6 +4,9 @@ category = input("Category(Lost/Found): ")
 loc = input(f"Where was it {category}? ")
 other = input("Other details(optional): ")
 
+with open("data.csv", "a") as data:
+    data.write(f"\n{number},{item},{category},{loc},{other}")
+
 print(f"""
 You entered:
 Phone number: {number}
