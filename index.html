@@ -1,0 +1,49 @@
+
+<!DOCTYPE html>
+<form>
+  Phone number: <input type="tel" required id="ph"> <br>
+  Item name: <input type="text" required id="item"> <br>
+  Category: <input type="radio" name="category" value="Lost" required> Lost <input type="radio" name="category" value="Found"> Found <br>
+  Where was it lost/found? <input type="text" required id="loc"> <br>
+  Other details (optional): <input type="text" id="detail"> <br>
+  <input type="submit" id="submitBtn">
+</form>
+
+<script>
+  const scriptURL = "https://script.google.com/macros/s/AKfycbytr_opoM63xI-ZALz0PdU1bUgUCvcNeapzsPFmlBBy4ibiq2IiYnvXSeE8l5rQke00/exec";
+
+  document.querySelector("form")
+    .addEventListener("submit", async function (event) {
+      event.preventDefault();
+
+      const button = document.getElementById("submitBtn");
+
+      const data = {
+        phone: document.getElementById("ph").value,
+        item: document.getElementById("item").value,
+        category: document.querySelector(
+          'input[name="category"]:checked'
+        )?.value,
+        location: document.getElementById("loc").value,
+        detail: document.getElementById("detail").value
+      };
+
+      button.disabled = true;
+
+      try {
+        await fetch(scriptURL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: {
+            "Content-Type": "text/plain;charset=utf-8"
+          },
+          body: JSON.stringify(data)
+        });
+        this.reset();
+      } catch (error) {
+        console.log("Unable to send the submission.");
+      } finally {
+        button.disabled = false;
+      }
+    });
+</script>
